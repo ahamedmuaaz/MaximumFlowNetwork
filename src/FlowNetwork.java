@@ -20,10 +20,11 @@ public class FlowNetwork {
         // your matrix declare
         boolean [] visited = new boolean[6];
 
-        int graph[][] =new int[][] { {0, 10,8, 0, 0, 0},
+        int graph[][] =new int[][] {
+                {0, 10,8, 0, 0, 0},
                 {0, 0,2,5, 0, 0},
                 {0, 0, 0, 0, 10, 0},
-                {0, 0, 9, 0, 0,7},
+                {0, 0, 0, 0, 0,7},
                 {0, 0, 0, 8, 0,10},
                 {0, 0, 0, 0, 0, 0}
         };

@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class MaxFlow
 {
@@ -16,25 +17,28 @@ public class MaxFlow
 
         // Create a queue, enqueue source vertex and mark
         // source vertex as visited
-        LinkedList<Integer> queue = new LinkedList<Integer>();
-        queue.add(s);
+        //LinkedList<Integer> queue = new LinkedList<Integer>();
+        Stack<Integer> stack=new Stack<Integer>();
+        stack.add(s);
         visited[s] = true;
         parent[s]=-1;
 
         // Standard BFS Loop
-        while (queue.size()!=0)
+        while (!stack.empty())
         {
-            int u = queue.pollLast();
-            visited[u]=true;
-
+            //remove from top
+            int u =stack.pop();
+            visited[u] = true;
+            System.out.println("popped"+u + " ");
             for (int v=0; v<V; v++)
             {
                 if (visited[v]==false && rGraph[u][v] > 0)
                 {
-                    queue.add(v);
+                    stack.push(v);
                     parent[v] = u;
-                    visited[v] = true;
-                    break;
+                   // visited[v] = true;
+                    //stop exploring the current node
+                  // break;
                 }
             }
 
@@ -124,11 +128,12 @@ public class MaxFlow
         return max_flow;
     }
 
-    // Driver program to test above functions
+    // Driver program to DepthFirstSearchExample above functions
     public static void main (String[] args) throws java.lang.Exception
     {
         // Let us create a graph shown in the above example
-        int graph[][] =new int[][] { {0, 10,8, 0, 0, 0},
+        int graph[][] =new int[][] {
+                {0, 10,8, 0, 0, 0},
                 {0, 0,2,5, 0, 0},
                 {0, 0, 0, 0, 10, 0},
                 {0, 0, 0, 0, 0,7},
