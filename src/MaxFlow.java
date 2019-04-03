@@ -2,8 +2,8 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 public class MaxFlow
-{
-    static final int V = 6;    //Number of vertices in graph
+{    public static Graph g=new Graph();
+    static final int  V=g.V;    //Number of vertices in graph
 
     /* Returns true if there is a path from source 's' to sink
       't' in residual graph. Also fills parent[] to store the
@@ -70,7 +70,7 @@ public class MaxFlow
 
         for(int i=0;i<rGraph.length;i++) {
             for(int j=0;j<rGraph.length;j++) {
-                System.out.print(rGraph[i][j]+" ");
+                //System.out.print(rGraph[i][j]+" ");
             }
             System.out.println();
 
@@ -141,9 +141,10 @@ public class MaxFlow
                 {0, 0, 0, 0, 0, 0}
         };
         MaxFlow m = new MaxFlow();
+        g.generateGraph();
 
         System.out.println("The maximum possible flow is " +
-                m.fordFulkerson(graph, 0, 5));
+                m.fordFulkerson(g.graph,g.s,g.t));
 
     }
 }
