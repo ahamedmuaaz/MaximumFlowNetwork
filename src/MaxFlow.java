@@ -1,14 +1,15 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
 
-public class MaxFlow
-{    public static Graph g=new Graph();
-    static final int  V=g.V;    //Number of vertices in graph
+public class MaxFlow {
+    public static Graph g = new Graph();
+    static final int V =g.V;    //Number of vertices in graph
 
     /* Returns true if there is a path from source 's' to sink
       't' in residual graph. Also fills parent[] to store the
       path */
-    boolean bfs(int rGraph[][], int s, int t, int parent[])
+    static boolean bfs(int rGraph[][], int s, int t, int parent[])
     {
         // Create a visited array and mark all vertices as not
         // visited
@@ -23,35 +24,122 @@ public class MaxFlow
         visited[s] = true;
         parent[s]=-1;
 
+        boolean b=false;
         // Standard BFS Loop
+        int m=0;
+
+        ArrayList<Integer> arr=new ArrayList<Integer>();
+        for(int i=0;i<arr.size();i++)arr.add(-1);
+
         while (!stack.empty())
         {
             //remove from top
             int u =stack.pop();
-            visited[u] = true;
+             b=false;
+           // visited[u] = true;
+
             System.out.println("popped"+u + " ");
             for (int v=0; v<V; v++)
             {
                 if (visited[v]==false && rGraph[u][v] > 0)
-                {
+                {   arr.add(u);
                     stack.push(v);
                     parent[v] = u;
-                   // visited[v] = true;
+                    visited[v] = true;
                     //stop exploring the current node
-                  // break;
+                    b=true;
+                    break;
                 }
             }
+            if(b==false && visited[t]!=true && m!=-1){
+
+                //m=-1;
+                for(int i=arr.size()-1;i>0;i--){
+                    if(arr.get(i)!=-1){
+                        m=arr.get(i);
+                        stack.push(m);
+                        arr.set(i,-1);
+
+                        break;
+                    }
+                    else{
+                        m=-1;
+                    }
+
+                }
+                //b=false;
+            }
+
+
+
+
 
         }
 
-        // If we reached sink in BFS starting from source, then
-        // return true, else false
+    // If we reached sink in BFS starting from source, then
+     //return true, else false
         return (visited[t] == true);
     }
 
+   // private static int[] parent = new int[V];
+
+
+   /* static boolean dfs(int rGraph[][], int s, int t, int parent[]) {
+        // Create a visited array and mark all vertices as not
+        // visited
+        boolean visited[] = new boolean[V];
+
+
+        // Create a queue, enqueue source vertex and mark
+        // source vertex as visited
+        //LinkedList<Integer> queue = new LinkedList<Integer>();
+        Stack<Integer> stack = new Stack<Integer>();
+        stack.add(s);
+        visited[s] = true;
+        parent[s] = -1;
+        boolean b = false;
+        int scources = 0;
+
+        for(int i=0;i<V;i++)
+        {
+            if(rGraph[0][i]>0)
+                scources++;
+        }
+
+        System.out.println("Scources :"+scources);
+        int u=0;
+        // Standard BFS Loop
+        while (!(u==0 && scources==0)) {
+            //remove from top
+
+            visited[u] = true;
+//            System.out.println("popped" + u + " ");
+            for (int v = 0; v < V; v++) {
+                if (visited[v] == false && rGraph[u][v] > 0) {
+                    stack.push(v);
+                    parent[v] = u;
+                    visited[v] = true;
+                    System.out.println("was here");
+                    u=v;
+                    b = true;
+                    if(u==0)
+                        scources--;
+                    break;
+                }
+            }
+            if (b == false) {
+                u = stack.pop();
+            }
+            System.out.println("u :"+u);
+
+        }
+
+        return (visited[t] == true);
+
+    }
+*/
     // Returns tne maximum flow from s to t in the given graph
-    int fordFulkerson(int graph[][], int s, int t)
-    {
+    static int fordFulkerson(int graph[][], int s, int t) {
         int u, v;
 
         // Create a residual graph and fill the residual graph
@@ -68,13 +156,6 @@ public class MaxFlow
             for (v = 0; v < V; v++)
                 rGraph[u][v] = graph[u][v];
 
-        for(int i=0;i<rGraph.length;i++) {
-            for(int j=0;j<rGraph.length;j++) {
-                //System.out.print(rGraph[i][j]+" ");
-            }
-            System.out.println();
-
-        }
 
         // This array is filled by BFS and to store path
         int parent[] = new int[V];
@@ -83,40 +164,39 @@ public class MaxFlow
 
         // Augment the flow while tere is path from source
         // to sink
-        while (bfs(rGraph, s, t, parent))
-        {
+        while (bfs(rGraph, s, t, parent)) {
             // Find minimum residual capacity of the edhes
             // along the path filled by BFS. Or we can say
             // find the maximum flow through the path found.
-            System.out.println("path*************");
-            for(int i=V-1;i>=0;i--) {
-                System.out.print(parent[i]+" ");
-            }
+//            System.out.println("path*************");
+//            for (int i = V - 1; i >= 0;) {
+//                System.out.print(i+" :"+parent[i] + " ");
+//                i=parent[i];
+//            }
+            System.out.println();
             System.out.println("*************");
 
             int path_flow = Integer.MAX_VALUE;
-            for (v=t; v!=s; v=parent[v])
-            {
+            for (v = t; v != s; v = parent[v]) {
                 u = parent[v];
                 path_flow = Math.min(path_flow, rGraph[u][v]);
 
             }
-            System.out.println("pathe min="+path_flow);
+            System.out.println("pathe min=" + path_flow);
 
             // update residual capacities of the edges and
             // reverse edges along the path
-            for (v=t; v != s; v=parent[v])
-            {
+            for (v = t; v != s; v = parent[v]) {
                 u = parent[v];
                 rGraph[u][v] -= path_flow;
                 rGraph[v][u] += path_flow;
             }
-            System.out.println("***********");
-            for(int i=0;i<rGraph.length;i++) {
-                for(int j=0;j<rGraph.length;j++) {
-                    System.out.print(rGraph[i][j]+" ");
+//            System.out.println("***********");
+            for (int i = 0; i < rGraph.length; i++) {
+                for (int j = 0; j < rGraph.length; j++) {
+//                    System.out.print(rGraph[i][j] + " ");
                 }
-                System.out.println();
+//                System.out.println();
 
             }
 
@@ -129,22 +209,28 @@ public class MaxFlow
     }
 
     // Driver program to DepthFirstSearchExample above functions
-    public static void main (String[] args) throws java.lang.Exception
-    {
+    public static void main(String[] args) throws java.lang.Exception {
         // Let us create a graph shown in the above example
-        int graph[][] =new int[][] {
-                {0, 10,8, 0, 0, 0},
-                {0, 0,2,5, 0, 0},
+       /* int graph[][] = new int[][]{
+                {0, 10, 8, 0, 0, 0},
+                {0, 0, 2, 5, 0, 0},
                 {0, 0, 0, 0, 10, 0},
-                {0, 0, 0, 0, 0,7},
-                {0, 0, 0, 8, 0,10},
+                {0, 0, 0, 0, 0, 7},
+                {0, 0, 0, 8, 0, 10},
                 {0, 0, 0, 0, 0, 0}
         };
-        MaxFlow m = new MaxFlow();
-        g.generateGraph();
+*/
+//        System.out.println();
 
+
+        g.generateGraph();
+        MaxFlow m = new MaxFlow();
+      //  bfs(g.graph,g.s,g.t,);
         System.out.println("The maximum possible flow is " +
-                m.fordFulkerson(g.graph,g.s,g.t));
+                m.fordFulkerson(g.graph, g.s, g.t));
+
+        //fordFulkerson(graph,0,5);
+
 
     }
 }

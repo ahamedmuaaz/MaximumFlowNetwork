@@ -7,7 +7,7 @@ public class Graph {
 
     public Graph(){
         V=(int)(Math.random() * ((12 - 6) + 1)) + 6;
-        V=3;
+        //V=4;
         s=0;
         t=V-1;
        // this.generateGraph();
@@ -29,11 +29,13 @@ public class Graph {
         this. graph=new int[V][V];
         for(int i=0;i<graph.length;i++){
             for(int v=0;v<graph.length;v++){
-                if(i==v || v==0 ||i==t){
+                if(i==v || v==0 ||i==t||(i==s && v==t)||graph[v][i]>0){
                     graph[i][v]=0;
                 }
                 else{
+
                     graph[i][v]=(int)(Math.random() * ((20 - 5) + 1)) + 5;
+
 
                 }
 
