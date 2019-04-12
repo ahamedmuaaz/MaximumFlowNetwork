@@ -186,19 +186,24 @@ public class MaxFlow {
 
             // update residual capacities of the edges and
             // reverse edges along the path
+            System.out.println("path : ");
             for (v = t; v != s; v = parent[v]) {
+                System.out.print(v+" ");
                 u = parent[v];
                 rGraph[u][v] -= path_flow;
                 rGraph[v][u] += path_flow;
             }
-//            System.out.println("***********");
+            System.out.println();
+           System.out.println("***********");
             for (int i = 0; i < rGraph.length; i++) {
                 for (int j = 0; j < rGraph.length; j++) {
-//                    System.out.print(rGraph[i][j] + " ");
+                    System.out.print(rGraph[i][j] + " ");
                 }
-//                System.out.println();
 
+                System.out.println();
             }
+
+
 
             // Add path flow to overall flow
             max_flow += path_flow;
@@ -230,6 +235,8 @@ public class MaxFlow {
                 m.fordFulkerson(g.graph, g.s, g.t));
 
         //fordFulkerson(graph,0,5);
+
+        g.visualize(g.graph);
 
 
     }
