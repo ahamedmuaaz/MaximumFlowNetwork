@@ -1,3 +1,9 @@
+import org.graphstream.graph.*;
+import org.graphstream.graph.implementations.*;
+//import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.Viewer.CloseFramePolicy;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,7 +17,7 @@ public class Graph {
 
     public Graph(){
         V=(int)(Math.random() * ((12 - 6) + 1)) + 6;
-       // V=6;
+        V=4;
         s=0;
         t=V-1;
        // this.generateGraph();
@@ -130,6 +136,28 @@ public class Graph {
         frm.setVisible(true);
         frm.setSize(500, 300);
 
+    }
+
+    public void graphView(int[][] arr){
+
+
+        org.graphstream.graph.Graph graph1 = new SingleGraph("adjacency_matrixcfsff");
+
+
+        for(int i=0;i<arr.length;i++) {
+            ((SingleGraph) graph1).addNode(String.valueOf(i));
+        }
+        for(int i=0;i<arr.length;i++) {
+            for(int v=0;v<arr.length;v++) {
+                if(arr[i][v]>0) {
+                    graph1.addEdge(String.valueOf(i+""+v),String.valueOf(i),String.valueOf(v));
+                }
+            }
+        }
+
+
+        Viewer view =graph1.display();
+        view.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
     }
 
 

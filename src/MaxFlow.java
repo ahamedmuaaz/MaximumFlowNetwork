@@ -270,6 +270,12 @@ public class MaxFlow {
                             m.fordFulkerson(g.graph, g.s, g.t));
                 }
                 break;
+                case 4: {
+
+
+                    g.graphView(g.graph);
+                }
+                break;
                 case 0:{
                     System.out.println("******************");
                     System.exit(0);
