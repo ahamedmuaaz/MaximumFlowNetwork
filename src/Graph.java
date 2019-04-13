@@ -11,7 +11,7 @@ public class Graph {
 
     public Graph(){
         V=(int)(Math.random() * ((12 - 6) + 1)) + 6;
-        V=6;
+       // V=6;
         s=0;
         t=V-1;
        // this.generateGraph();
@@ -76,7 +76,7 @@ public class Graph {
         a.insets = new Insets(10, 10, 10, 10);
         //int h=0;
         //int v=0;
-        System.out.println(arr.length);
+
         for(int i=0;i<arr.length;i++) {
             a.gridx = 0;
             a.gridy = i+1;
@@ -92,7 +92,7 @@ public class Graph {
                     lbla.setForeground(Color.blue);
                     pan1.add(lbla,a);
                     m++;
-                    System.out.println("h");
+
                 }
             }
         }
