@@ -17,7 +17,7 @@ public class Graph {
 
     public Graph(){
         V=(int)(Math.random() * ((12 - 6) + 1)) + 6;
-        V=4;
+        //V=6;
         s=0;
         t=V-1;
        // this.generateGraph();

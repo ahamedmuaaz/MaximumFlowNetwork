@@ -11,7 +11,7 @@ public class MaxFlow {
     /* Returns true if there is a path from source 's' to sink
       't' in residual graph. Also fills parent[] to store the
       path */
-    static boolean bfs(int rGraph[][], int s, int t, int parent[]) {
+    static boolean dfs(int rGraph[][], int s, int t, int parent[]) {
         // Create a visited array and mark all vertices as not
         // visited
         boolean visited[] = new boolean[V];
@@ -38,7 +38,7 @@ public class MaxFlow {
             b = false;
             // visited[u] = true;
 
-            System.out.println("popped" + u + " ");
+
             for (int v = 0; v < V; v++) {
                 if (visited[v] == false && rGraph[u][v] > 0) {
                     arr.add(u);
@@ -159,7 +159,7 @@ public class MaxFlow {
 
         // Augment the flow while tere is path from source
         // to sink
-        while (bfs(rGraph, s, t, parent)) {
+        while (dfs(rGraph, s, t, parent)) {
             // Find minimum residual capacity of the edhes
             // along the path filled by BFS. Or we can say
             // find the maximum flow through the path found.
@@ -181,13 +181,14 @@ public class MaxFlow {
 
             // update residual capacities of the edges and
             // reverse edges along the path
-            System.out.println("path : ");
+            System.out.print("path : "+(V-1)+" ");
             for (v = t; v != s; v = parent[v]) {
-                System.out.print(v + " ");
+                System.out.print(parent[v] + " ");
                 u = parent[v];
                 rGraph[u][v] -= path_flow;
                 rGraph[v][u] += path_flow;
             }
+
             System.out.println();
             System.out.println("***********");
             for (int i = 0; i < rGraph.length; i++) {
@@ -224,8 +225,9 @@ public class MaxFlow {
         while (input != 0) {
             System.out.println("*********___Menu___***********:");
             System.out.println("Press 1 Generate Graph");
-            System.out.println("Press 2 View Graph");
+            System.out.println("Press 2 View Nodes and Edges");
             System.out.println("Press 3 MaxFlow");
+            System.out.println("Press 4 Real Graph");
             System.out.println("Press 0 EXIT");
 
 
