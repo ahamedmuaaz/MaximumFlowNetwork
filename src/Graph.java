@@ -1,49 +1,46 @@
-import org.graphstream.graph.*;
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.*;
-//import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.Viewer.CloseFramePolicy;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Scanner;
 
 public class Graph {
+    // no of vertex
     public int V;
 
-    int s;
-    int t;
-    int [][] graph;
+    //source node
+    public int s;
+    //sink node
+    public int t;
+    //graph
+    public int [][] graph;
+    Scanner sc=new Scanner(System.in);
 
 
     public Graph(){
-        V=(int)(Math.random() * ((12 - 6) + 1)) + 6;
-        //V=6;
-        s=0;
-        t=V-1;
-       // this.generateGraph();
-
-
-
-        System.out.println(V);
-        System.out.println(s);
-        System.out.println(t);
-
+        this.generateGraph();
     }
 
-    public static void main(String[] args) {
-        Graph g=new Graph();
-
-    }
-
+    //method to autogenerate graph
     public void generateGraph(){
+        //vertex between 6 12
+        this.V=(int)(Math.random() * ((12 - 6) + 1)) + 6;
+
+        this.s=0;
+        this.t=V-1;
+
         this. graph=new int[V][V];
         for(int i=0;i<graph.length;i++){
             for(int v=0;v<graph.length;v++){
-                if(i==v || v==0 ||i==t||(i==s && v==t)||graph[v][i]>0){
+                if(i==v || v==0 ||i==t||(i==s && v==t)||(graph[v][i]>0)){
                     graph[i][v]=0;
                 }
                 else{
-
+                    //capacity between 20 and 5
                     graph[i][v]=(int)(Math.random() * ((20 - 5) + 1)) + 5;
 
 
@@ -51,13 +48,17 @@ public class Graph {
 
             }
         }
-
+        System.out.println("THE GENERATED FLOW NETWORK");
+        System.out.println("*****************************");
+        System.out.println("Source(s)= "+s+" Sink(t)= "+t);
+        System.out.println("-----------------------------");
         for(int i=0;i<graph.length;i++){
             for(int m=0;m<V;m++){
                 System.out.print(graph[i][m]+" ");
             }
             System.out.println();
         }
+        System.out.println("-----------------------------");
 
 
 
@@ -66,22 +67,11 @@ public class Graph {
         JFrame frm = new JFrame();
         JPanel pan1 = new JPanel(new GridBagLayout());
 
-        JLabel lbl1 = new JLabel("0_29");
-        JLabel lbl2 = new JLabel("30_39");
-        JLabel lbl3 = new JLabel("40_69");
-        JLabel lbl4 = new JLabel("70_100");
-
-        //JLabel lbla = new JLabel("n");
-        JLabel lblb = new JLabel("a");
-        JLabel lblc = new JLabel("m");
-        JLabel lbld = new JLabel("s");
 
         GridBagConstraints a = new GridBagConstraints();
         a.anchor = GridBagConstraints.CENTER;
 
         a.insets = new Insets(10, 10, 10, 10);
-        //int h=0;
-        //int v=0;
 
         for(int i=0;i<arr.length;i++) {
             a.gridx = 0;
@@ -102,34 +92,6 @@ public class Graph {
                 }
             }
         }
-		/*a.gridx = 0;
-		a.gridy = 1;
-		pan1.add(lbl1, a);
-		a.gridx = 0;
-		a.gridy = 2;
-		pan1.add(lbl2, a);
-		a.gridx = 0;
-		a.gridy = 3;
-		pan1.add(lbl3, a);
-		a.gridx = 0;
-		a.gridy = 4;
-		pan1.add(lbl4, a);
-
-		a.gridx = 1;
-		a.gridy = 1;
-		pan1.add(lbla, a);
-
-		a.gridx = 1;
-		a.gridy = 2;
-		pan1.add(lblb, a);
-
-		a.gridx = 1;
-		a.gridy = 3;
-		pan1.add(lblc, a);
-
-		a.gridx = 1;
-		a.gridy = 4;
-		pan1.add(lbld, a);*/
 
         frm.add(pan1);
         frm.add(pan1, BorderLayout.WEST);
@@ -140,17 +102,18 @@ public class Graph {
 
     public void graphView(int[][] arr){
 
-
-        org.graphstream.graph.Graph graph1 = new SingleGraph("adjacency_matrixcfsff");
+        org.graphstream.graph.Graph graph1 = new SingleGraph("Graph View");
 
 
         for(int i=0;i<arr.length;i++) {
-            ((SingleGraph) graph1).addNode(String.valueOf(i));
+            Node d=graph1.addNode(String.valueOf(i));
+            d.setAttribute("ui.label",d.getId());
         }
         for(int i=0;i<arr.length;i++) {
             for(int v=0;v<arr.length;v++) {
                 if(arr[i][v]>0) {
-                    graph1.addEdge(String.valueOf(i+""+v),String.valueOf(i),String.valueOf(v));
+                    Edge e=graph1.addEdge(String.valueOf(i+""+v),String.valueOf(i),String.valueOf(v),true);
+                    e.addAttribute("ui.label",String.valueOf(arr[i][v]));
                 }
             }
         }
@@ -159,6 +122,54 @@ public class Graph {
         Viewer view =graph1.display();
         view.setCloseFramePolicy(CloseFramePolicy.CLOSE_VIEWER);
     }
+
+    public void changeCapacity(){
+
+        int node1 ,node2=0;
+        System.out.println("Enter the Nodes To change Capacity");
+        System.out.println("Node 1:");
+        do{
+            while (!sc.hasNextInt()) {
+                System.out.println("That's not a number!");
+                sc.next(); // this is important!
+            }
+            node1= sc.nextInt();
+        }while (!(node1>=0 && node1<=t));
+
+        System.out.println("Node 2:");
+        do {
+            while (!sc.hasNextInt()) {
+                System.out.println("That's not a number!");
+                sc.next(); // this is important!
+
+            }
+            node2 = sc.nextInt();
+        }while (!(node2>=0 && node2<=t));
+
+        if(graph[node1][node2]>0){
+            System.out.println("There is a connection");
+            System.out.println("Currrent capacity is "+graph[node1][node2]);
+            System.out.println("Enter the new Capacity");
+            int capacity=graph[node1][node2];
+            do{
+                while (!sc.hasNextInt()) {
+                    System.out.println("That's not a number!");
+                    sc.next(); // this is important!
+                }
+                capacity= sc.nextInt();
+            }while (!(capacity<=20 && capacity>0));
+            graph[node1][node2]=capacity;
+
+        }
+        else{
+            System.out.println("No Connection Exists");
+        }
+
+
+        }
+
+
+
 
 
 }
